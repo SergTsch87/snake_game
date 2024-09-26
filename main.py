@@ -37,7 +37,6 @@ class Food(pygame.sprite.Sprite):
         self.image = pygame.Surface((50, 50))
         self.image.fill((128, 0, 255))   # Задаємо колір
         self.rect = self.image.get_rect()
-        # self.rect.center = (400, 300)
         self.rect.topleft = (175, 175)
 
 
