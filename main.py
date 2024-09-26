@@ -3,14 +3,6 @@ import pygame
 from pygame.sprite import Group
 
 
-# Для керування напрямом руху спрайту'
-directions = {
-    pygame.K_LEFT: (-5, 0),
-    pygame.K_RIGHT: (5, 0),
-    pygame.K_UP: (0, -5),
-    pygame.K_DOWN: (0, 5)
-}
-
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
@@ -18,10 +10,21 @@ class Player(pygame.sprite.Sprite):
         self.image = pygame.Surface((50, 50))
         self.image.fill((0, 128, 255))   # Задаємо колір
         self.rect = self.image.get_rect()
-        self.rect.center = (400, 300)
+        # self.rect.center = (400, 300)
+        self.rect.topleft = (175, 175)
 
     def update(self, keys):
-        for key, (dx, dy) in directions.items:
+        step = self.rect.width
+
+        # Для керування напрямом руху спрайту'
+        directions = {
+            pygame.K_LEFT: (-step, 0),
+            pygame.K_RIGHT: (step, 0),
+            pygame.K_UP: (0, -step),
+            pygame.K_DOWN: (0, step)
+        }
+
+        for key, (dx, dy) in directions.items():
             if keys[key]:
                 self.rect.x += dx
                 self.rect.y += dy
@@ -33,6 +36,7 @@ def main():
     all_sprites = pygame.sprite.Group()
     player = Player()
     all_sprites.add(player)
+    # Встановлення FPS
     clock = pygame.time.Clock()
 
     running = True
@@ -47,7 +51,7 @@ def main():
         screen.fill((0, 0, 0))
         all_sprites.draw(screen)  # Малюємо спрайт (прямокутник)
         pygame.display.flip()
-        clock.tick(60)
+        clock.tick(10)
 
     pygame.quit()
 
