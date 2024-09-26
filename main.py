@@ -3,7 +3,7 @@ import pygame
 from pygame.sprite import Group
 
 
-class Player(pygame.sprite.Sprite):
+class Snake(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
         # Замість зображення використовуємо кольоровий прямокутник
@@ -30,12 +30,23 @@ class Player(pygame.sprite.Sprite):
                 self.rect.y += dy
 
 
+class Food(pygame.sprite.Sprite):
+    def __init__(self):
+        super().__init__()
+        # Замість зображення використовуємо кольоровий прямокутник
+        self.image = pygame.Surface((50, 50))
+        self.image.fill((128, 0, 255))   # Задаємо колір
+        self.rect = self.image.get_rect()
+        # self.rect.center = (400, 300)
+        self.rect.topleft = (175, 175)
+
+
 def main():
     pygame.init()
     screen = pygame.display.set_mode((800, 600))
     all_sprites = pygame.sprite.Group()
-    player = Player()
-    all_sprites.add(player)
+    snake = Snake()
+    all_sprites.add(snake)
     # Встановлення FPS
     clock = pygame.time.Clock()
 
