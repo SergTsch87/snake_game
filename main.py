@@ -1,7 +1,15 @@
 #!usr/bin/env
 import pygame
-from pygame.sprite import _Group
+from pygame.sprite import Group
 
+
+# Для керування напрямом руху спрайту'
+directions = {
+    pygame.K_LEFT: (-5, 0),
+    pygame.K_RIGHT: (5, 0),
+    pygame.K_UP: (0, -5),
+    pygame.K_DOWN: (0, 5)
+}
 
 class Player(pygame.sprite.Sprite):
     def __init__(self):
@@ -13,14 +21,10 @@ class Player(pygame.sprite.Sprite):
         self.rect.center = (400, 300)
 
     def update(self, keys):
-        if keys[pygame.K_LEFT]:
-            self.rect.x -= 5
-        if keys[pygame.K_RIGHT]:
-            self.rect.x += 5
-        if keys[pygame.K_UP]:
-            self.rect.y -= 5
-        if keys[pygame.K_DOWN]:
-            self.rect.y += 5
+        for key, (dx, dy) in directions.items:
+            if keys[key]:
+                self.rect.x += dx
+                self.rect.y += dy
 
 
 def main():
