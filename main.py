@@ -24,7 +24,14 @@ class Player(pygame.sprite.Sprite):
 
 
 def main():
-    pass
+    pygame.init()
+    screen = pygame.display.set_mode((800, 600))
+    all_sprites = pygame.sprite.Group()
+    player = Player()
+    all_sprites.add(player)
+    clock = pygame.time.Clock()
+
+    running = True
 
 if __name__ == "__main__":
     main()
