@@ -12,6 +12,16 @@ class Player(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.center = (400, 300)
 
+    def update(self, keys):
+        if keys[pygame.K_LEFT]:
+            self.rect.x -= 5
+        if keys[pygame.K_RIGHT]:
+            self.rect.x += 5
+        if keys[pygame.K_UP]:
+            self.rect.y -= 5
+        if keys[pygame.K_DOWN]:
+            self.rect.y += 5
+
 
 def main():
     pass
