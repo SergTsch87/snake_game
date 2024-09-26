@@ -32,6 +32,21 @@ def main():
     clock = pygame.time.Clock()
 
     running = True
+    while running:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+
+        keys = pygame.key.get_pressed()
+        all_sprites.update(keys)
+
+        screen.fill((0, 0, 0))
+        all_sprites.draw(screen)  # Малюємо спрайт (прямокутник)
+        pygame.display.flip()
+        clock.tick(60)
+
+    pygame.quit()
+
 
 if __name__ == "__main__":
     main()
