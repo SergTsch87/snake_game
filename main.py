@@ -40,7 +40,7 @@ class Snake(pygame.sprite.Sprite):
     def update(self, keys):
         step = self.rect.width
 
-        # Для керування напрямом руху спрайту'
+        # Для керування напрямом руху спрайту
         directions = {
             pygame.K_LEFT: (-step, 0),
             pygame.K_RIGHT: (step, 0),
@@ -56,12 +56,16 @@ class Snake(pygame.sprite.Sprite):
 
 class Food(pygame.sprite.Sprite):
     def __init__(self):
-        super().__init__()
-        # Замість зображення використовуємо кольоровий прямокутник
-        self.image = pygame.Surface((50, 50))
-        self.image.fill((128, 0, 255))   # Задаємо колір
-        self.rect = self.image.get_rect()
-        self.rect.topleft = (175, 175)
+        self.position = (random.randint(0, grid_width - 1), random.randint(0, grid_height - 1))
+    
+    def respawn(self):
+        self.position = (random.randint(0, grid_width - 1), random.randint(0, grid_height - 1))
+        # super().__init__()
+        # # Замість зображення використовуємо кольоровий прямокутник
+        # self.image = pygame.Surface((50, 50))
+        # self.image.fill((128, 0, 255))   # Задаємо колір
+        # self.rect = self.image.get_rect()
+        # self.rect.topleft = (175, 175)
 
 
 def main():
@@ -70,8 +74,11 @@ def main():
     # screen = pygame.display.set_mode((screen_width, screen_height))
     pygame.display.set_caption("Змійка")
     all_sprites = pygame.sprite.Group()
-    snake = Snake()
+    snake = Snake()    
     all_sprites.add(snake)
+
+    food = Food()
+
     # Встановлення FPS
     clock = pygame.time.Clock()
 
@@ -87,6 +94,11 @@ def main():
         screen.fill((255, 255, 255))
         draw_grid()
         all_sprites.draw(screen)  # Малюємо спрайт (прямокутник)
+
+        # Малюємо їжу
+        food_rect = (food.position[0] * cell_size, food.position[1] * cell_size, cell_size, cell_size)
+        pygame.draw.rect(screen, RED, food_rect)
+
         pygame.display.flip()
         clock.tick(10)
 
