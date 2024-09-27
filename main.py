@@ -37,10 +37,22 @@ class Snake(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.topleft = (cell_size * 10, cell_size * 10)
 
-    def update(self, keys):
-        step = self.rect.width
+        # Відстежуємо поточний напрям руху змійки
+        self.direction = pygame.K_RIGHT   # Напрям за замовчуванням праворуч
 
-        # Для керування напрямом руху спрайту
+    # def move(self):
+    #     step = self.rect.width
+
+    #     self.rect.x += step
+
+    #     if self.rect.x >= screen_width:
+    #         self.rect.topleft = (cell_size * 0, cell_size * 10)
+
+    
+    def update(self, keys):
+        # Напрямки нанесені на кроки пересування
+        step = self.rect.width
+        
         directions = {
             pygame.K_LEFT: (-step, 0),
             pygame.K_RIGHT: (step, 0),
@@ -48,22 +60,35 @@ class Snake(pygame.sprite.Sprite):
             pygame.K_DOWN: (0, step)
         }
 
-        self.rect.x += step
+        for key in directions:
+            if keys[key] and self.is_opposite_direction(key) == False:
+                self.direction = key
 
+        # Застосуємо рух у поточному напрямку
+        dx, dy = directions[self.direction]
+        self.rect.x += dx
+        self.rect.y += dy
+
+        # Handle boundary wrapping
         if self.rect.x >= screen_width:
-            self.rect.topleft = (cell_size * 0, cell_size * 10)
+            self.rect.x = 0
+        elif self.rect.x < 0:
+            self.rect.x = screen_width - cell_size
+        if self.rect.y >= screen_height:
+            self.rect.y = 0
+        elif self.rect.y < 0:
+            self.rect.y = screen_height - cell_size
 
-        # self.rect.x += dx
 
-        # for key, (dx, dy) in directions.items():
-        #     if keys[key]:
-        #         self.rect.x += dx
-        #         self.rect.y += dy
-
-# Спочатку змійка рухається, скажімо, вправо.
-# А потім, стрілками-клавішами ми задаємо подальший напрям її руху.
-# Коли стрілка буде протилежною до поточного напряму руху змійки, - тоді просто
-# ігноримо таку клавішу (напрям залишаємо незмінним)
+    def is_opposite_direction(self, new_direction):
+        # Попередити протилежний напрям руху
+        opposites = {
+            pygame.K_LEFT: pygame.K_RIGHT,
+            pygame.K_RIGHT: pygame.K_LEFT,
+            pygame.K_UP: pygame.K_DOWN,
+            pygame.K_DOWN: pygame.K_UP
+        }
+        return opposites[self.direction] == new_direction
 
 
 class Food(pygame.sprite.Sprite):
