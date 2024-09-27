@@ -48,10 +48,22 @@ class Snake(pygame.sprite.Sprite):
             pygame.K_DOWN: (0, step)
         }
 
-        for key, (dx, dy) in directions.items():
-            if keys[key]:
-                self.rect.x += dx
-                self.rect.y += dy
+        self.rect.x += step
+
+        if self.rect.x >= screen_width:
+            self.rect.topleft = (cell_size * 0, cell_size * 10)
+
+        # self.rect.x += dx
+
+        # for key, (dx, dy) in directions.items():
+        #     if keys[key]:
+        #         self.rect.x += dx
+        #         self.rect.y += dy
+
+# Спочатку змійка рухається, скажімо, вправо.
+# А потім, стрілками-клавішами ми задаємо подальший напрям її руху.
+# Коли стрілка буде протилежною до поточного напряму руху змійки, - тоді просто
+# ігноримо таку клавішу (напрям залишаємо незмінним)
 
 
 class Food(pygame.sprite.Sprite):
@@ -60,18 +72,11 @@ class Food(pygame.sprite.Sprite):
     
     def respawn(self):
         self.position = (random.randint(0, grid_width - 1), random.randint(0, grid_height - 1))
-        # super().__init__()
-        # # Замість зображення використовуємо кольоровий прямокутник
-        # self.image = pygame.Surface((50, 50))
-        # self.image.fill((128, 0, 255))   # Задаємо колір
-        # self.rect = self.image.get_rect()
-        # self.rect.topleft = (175, 175)
 
 
 def main():
     pygame.init()
 
-    # screen = pygame.display.set_mode((screen_width, screen_height))
     pygame.display.set_caption("Змійка")
     all_sprites = pygame.sprite.Group()
     snake = Snake()    
@@ -100,7 +105,7 @@ def main():
         pygame.draw.rect(screen, RED, food_rect)
 
         pygame.display.flip()
-        clock.tick(10)
+        clock.tick(2)
 
     pygame.quit()
 
